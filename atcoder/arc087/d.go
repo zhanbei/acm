@@ -25,6 +25,8 @@ var tx, ty int
 // 2018-08-02T14:04:20+0800
 // 2018-08-02T15:14:25+0800 # @see https://arc087.contest.atcoder.jp/submissions/2934062
 // 2018-08-02T15:35:00+0800 # @see https://arc087.contest.atcoder.jp/submissions/2934106
+// 2018-08-02T21:40:34+0800 # Looked for help and start coding.
+// 2018-08-02T21:54:53+0800 # AC Using dp with cache.
 func main() {
 	var s string
 	fmt.Scanf("%s", &s)
@@ -62,6 +64,32 @@ func main() {
 	x, y := vh[0], 0
 	// x -> tx
 	// y -> ty
+	initx := make(map[int]bool, 1)
+	initx[x] = true
+	inity := make(map[int]bool, 1)
+	inity[y] = true
+	if dpForMap(dx[1:idx], initx)[tx] && dpForMap(dy[0:idy], inity)[ty] {
+		fmt.Println("Yes")
+	} else {
+		fmt.Println("No")
+	}
+}
+
+func dpForMap(dd []int, ends map[int]bool) map[int]bool {
+	if len(dd) == 0 {
+		return ends
+	}
+	m := make(map[int]bool, len(ends)*2)
+	for k := range ends {
+		m[k-dd[0]] = true
+		m[k+dd[0]] = true
+	}
+	return dpForMap(dd[1:], m)
+}
+
+func dpCacheMain() {
+	var dx, dy []int
+	var idx, x, idy, y int
 	if dpx(dx[1:idx], x) && dpy(dy[0:idy], y) {
 		fmt.Println("Yes")
 	} else {

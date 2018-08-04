@@ -11,6 +11,7 @@ import (
 // 2018-08-04T15:32:40+0800 # @see https://arc091.contest.atcoder.jp/submissions/2940951
 // 2018-08-04T15:38:28+0800 # @see https://arc091.contest.atcoder.jp/submissions/2940961
 // 2018-08-04T15:40:22+0800 # @see https://arc091.contest.atcoder.jp/submissions/2940967
+// 2018-08-04T19:13:38+0800 # @see https://arc091.contest.atcoder.jp/submissions/2941537
 func main() {
 	var N, A, B int
 	fmt.Scanf("%d%d%d", &N, &A, &B)
@@ -69,7 +70,18 @@ func main() {
 	// Now divide N to A groups while the largest one is B
 	// (A-1)*span + B = N
 	span := (N - B) / (A - 1)
-	left := (N - B) - span*(A-2)
+	left := (N - B) - span*(A-1)
+	reversePrintSlice(1, B)
+	for i := 0; i < A-1; i++ {
+		if i < left {
+			reversePrintSlice(B+1+(span+1)*i, span+1)
+		} else {
+			reversePrintSlice(B+1+span*i+left, span)
+		}
+	}
+	fmt.Println()
+	return
+
 	out := make([]int, N)
 	iout := 0
 	// span <= span <= B
@@ -92,4 +104,10 @@ func main() {
 		fmt.Print(out[i], " ")
 	}
 	fmt.Println(out[N-1])
+}
+
+func reversePrintSlice(from, length int) {
+	for i := from + length - 1; i >= from; i-- {
+		fmt.Print(i, " ")
+	}
 }
